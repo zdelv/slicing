@@ -13,9 +13,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85ebb769-a383-48af-a52a-7b2ab9bcae3b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/slicing.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/plane.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/geometry/plane.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/units.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/geometry/units.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/load.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/load.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,23 +67,19 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="language.rust" />
   </component>
   <component name="RunDashboard">
     <option name="openRunningConfigInTab" value="true" />
   </component>
   <component name="RunManager" selected="Cargo.Test">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Expand slicing::geometry::vertex" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="expand --lib --color=always --theme=GitHub --tests geometry::vertex" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -96,7 +97,7 @@
       </method>
     </configuration>
     <configuration name="Test" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="test --package slicing --lib tests" />
+      <option name="command" value="test --package slicing" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -111,6 +112,15 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Cargo.Test" />
+      <item itemvalue="Cargo.Expand slicing::geometry::vertex" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Cargo.Expand slicing::geometry::vertex" />
@@ -122,7 +132,7 @@
   <component name="RustProjectSettings">
     <option name="autoShowErrorsInEditor" value="false" />
     <option name="runRustfmtOnSave" value="true" />
-    <option name="toolchainHomeDirectory" value="$PROJECT_DIR$/../../../.cargo/bin" />
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
     <option name="useRustfmt" value="true" />
     <option name="version" value="2" />
   </component>
@@ -136,6 +146,7 @@
       <updated>1634047192905</updated>
       <workItem from="1634047195822" duration="5369000" />
       <workItem from="1634052615641" duration="1239000" />
+      <workItem from="1634057031232" duration="4695000" />
     </task>
     <servers />
   </component>
