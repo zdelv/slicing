@@ -1,5 +1,10 @@
-use euclid::{Point3D, Vector3D};
+use euclid::{Point3D, UnknownUnit, Vector3D};
 use std::ops::{Mul, Sub};
+
+// TODO: Move this out of here
+type Plane3DU<T> = Plane<T, UnknownUnit>;
+type Point3DU<T> = Point3D<T, UnknownUnit>;
+type Vector3DU<T> = Vector3D<T, UnknownUnit>;
 
 // A plane with generic backing type and unit
 #[derive(Debug)]
@@ -45,11 +50,11 @@ where
 fn test_from_points() {
     use crate::geometry::units::*;
     assert_eq!(
-        Plane::new(Vector3D::<i32, Meter>::new(0, 0, 1), Point3D::new(0, 0, 0)),
-        Plane::from_points(
-            Point3D::<i32, Meter>::new(1, 0, 0),
-            Point3D::new(0, 1, 0),
-            Point3D::new(0, 0, 0)
+        Plane3DU::new(Vector3DU::<i32>::new(0, 0, 1), Point3DU::new(0, 0, 0)),
+        Plane3DU::from_points(
+            Point3DU::<i32>::new(1, 0, 0),
+            Point3DU::new(0, 1, 0),
+            Point3DU::new(0, 0, 0)
         )
     )
 }
