@@ -1,35 +1,26 @@
-use euclid::{Point3D, UnknownUnit, Vector3D};
-use std::ops::{Mul, Sub};
-
-// TODO: Move this out of here
-type Plane3DU<T> = Plane<T, UnknownUnit>;
-type Point3DU<T> = Point3D<T, UnknownUnit>;
-type Vector3DU<T> = Vector3D<T, UnknownUnit>;
+use crate::geometry::{Point, Vector};
+use serde::Serialize;
+use std::fmt::Formatter;
 
 // A plane with generic backing type and unit
-#[derive(Debug)]
-pub struct Plane<T, U> {
-    pub normal: Vector3D<T, U>,
-    pub point: Point3D<T, U>,
+#[derive(Debug, Clone, Serialize)]
+pub struct Plane {
+    pub normal: Vector,
+    pub point: Point,
 }
 
-impl<T: Clone + Copy, U> Plane<T, U> {
+impl Plane {
     #[allow(dead_code)]
-    pub fn new(normal: Vector3D<T, U>, point: Point3D<T, U>) -> Self {
+    pub fn new(mut normal: Vector, point: Point) -> Self {
+        // If the normal isn't a unit vector, make it such
+        if (normal.len() - 1.0).abs() > f64::EPSILON {
+            normal = normal.unit();
+        }
         Plane { normal, point }
     }
-}
 
-impl<T, U> Plane<T, U>
-where
-    T: Copy + Sub<Output = T> + Mul<Output = T>,
-    <T as Sub>::Output: Copy,
-{
     #[allow(dead_code)]
-    pub fn from_points(p1: Point3D<T, U>, p2: Point3D<T, U>, p3: Point3D<T, U>) -> Self
-    where
-        <T as Sub>::Output: Sub,
-    {
+    pub fn from_points(p1: Point, p2: Point, p3: Point) -> Self {
         let normal = (p2 - p1).cross(p3 - p1);
         let point = p3;
         Plane::new(normal, point)
@@ -37,24 +28,26 @@ where
 }
 
 // For some reason #[derive(PartialEq)] doesn't work.
-impl<T, U> std::cmp::PartialEq for Plane<T, U>
-where
-    T: PartialEq,
-{
+impl std::cmp::PartialEq for Plane {
     fn eq(&self, other: &Self) -> bool {
         self.normal == other.normal && self.point == other.point
     }
 }
 
+impl std::fmt::Display for Plane {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Normal: {}, Point: {}", self.normal, self.point)
+    }
+}
+
 #[test]
 fn test_from_points() {
-    use crate::geometry::units::*;
     assert_eq!(
-        Plane3DU::new(Vector3DU::<i32>::new(0, 0, 1), Point3DU::new(0, 0, 0)),
-        Plane3DU::from_points(
-            Point3DU::<i32>::new(1, 0, 0),
-            Point3DU::new(0, 1, 0),
-            Point3DU::new(0, 0, 0)
+        Plane::new(Vector::new(0.0, 0.0, 1.0), Point::new(0.0, 0.0, 0.0)),
+        Plane::from_points(
+            Point::new(1.0, 0.0, 0.0),
+            Point::new(0.0, 1.0, 0.0),
+            Point::new(0.0, 0.0, 0.0)
         )
     )
 }

@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 #[derive(Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
-pub enum Units {
+pub enum Unit {
     Meter,
     Centimeter,
     Millimeter,
@@ -13,7 +13,7 @@ pub enum Units {
     Unknown,
 }
 
-impl Units {
+impl Unit {
     pub fn new(name: &str) -> Self {
         match name {
             "meters" => Self::Meter,
@@ -26,10 +26,10 @@ impl Units {
     }
 }
 
-impl FromStr for Units {
+impl FromStr for Unit {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Units::new(s))
+        Ok(Unit::new(s))
     }
 }

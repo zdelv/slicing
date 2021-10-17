@@ -5,26 +5,27 @@ use quick_xml::de::from_reader;
 use serde::Deserialize;
 use zip::ZipArchive;
 
+use crate::common::Unit;
 use crate::error::Error;
-use crate::units::Units;
-use crate::xml_parse::Object;
+use crate::threemf::xml_parse::Resources;
+use crate::threemf::Object;
 
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Model {
-    pub unit: Units,
-    #[serde(rename = "resources", with = "crate::xml_parse::Resources", default)]
+    pub unit: Unit,
+    #[serde(rename = "resources", with = "Resources", default)]
     pub objects: Vec<Object>,
 }
 
 impl Model {
     #[allow(dead_code)]
     pub fn name(&self) -> &str {
-        return self.objects[0].name.as_str();
+        self.objects[0].name.as_str()
     }
 
     #[allow(dead_code)]
     pub fn num_objects(&self) -> usize {
-        return self.objects.len();
+        self.objects.len()
     }
 
     #[allow(dead_code)]
@@ -43,7 +44,7 @@ impl Model {
     pub fn empty() -> Self {
         Model {
             objects: Vec::new(),
-            unit: Units::Unknown,
+            unit: Unit::Unknown,
         }
     }
 
@@ -60,7 +61,7 @@ impl Model {
 
         // If we didn't find a model, return an error
         if model_file_name.is_empty() {
-            return Err(Error::EmptyModelError);
+            return Err(Error::TooManyModels);
         }
 
         // Grab our zip file
@@ -77,7 +78,7 @@ impl Model {
         let curs = Cursor::new(data);
         let archive = ZipArchive::new(curs)?;
 
-        Ok(Self::new(archive)?)
+        Self::new(archive)
     }
 
     #[allow(dead_code)]
@@ -86,7 +87,7 @@ impl Model {
 
         let archive = ZipArchive::new(file)?;
 
-        Ok(Self::new(archive)?)
+        Self::new(archive)
     }
 }
 
@@ -96,7 +97,7 @@ fn create_model() {
     assert_eq!(
         Model {
             objects: Vec::new(),
-            unit: Units::Unknown
+            unit: Unit::Unknown
         },
         model
     )

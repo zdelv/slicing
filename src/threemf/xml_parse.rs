@@ -1,4 +1,3 @@
-use crate::mesh::Mesh;
 use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, Deserialize, PartialEq, Clone)]
@@ -33,15 +32,6 @@ impl<T> Triangles<T> {
         let wrapper = <Self as Deserialize>::deserialize(deserializer)?;
         Ok(wrapper.triangle)
     }
-}
-
-#[derive(Debug, Deserialize, PartialEq)]
-pub struct Object {
-    pub id: usize,
-    pub name: String,
-    #[serde(rename = "type", default)]
-    pub otype: String,
-    pub mesh: Mesh,
 }
 
 #[derive(Debug, Deserialize, PartialEq)]

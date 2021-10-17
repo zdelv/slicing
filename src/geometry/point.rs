@@ -1,47 +1,37 @@
 use crate::geometry::Vector;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 use std::ops::{AddAssign, DivAssign, MulAssign, SubAssign};
 
 // Can also describe a vector
-#[derive(Debug, Deserialize, PartialEq, Clone)]
-pub struct Vertex {
+#[derive(Debug, Deserialize, PartialEq, Clone, Copy, Serialize)]
+pub struct Point {
     pub x: f64,
     pub y: f64,
     pub z: f64,
 }
 
-impl Vertex {
+impl Point {
     pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Vertex { x, y, z }
+        Point { x, y, z }
     }
 
     pub fn zero() -> Self {
-        Vertex::new(0.0, 0.0, 0.0)
+        Point::new(0.0, 0.0, 0.0)
     }
 }
 
-impl Vertex {
-    pub fn len(&self) -> f64 {
-        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
-    }
-
-    pub fn unit(&self) -> Vertex {
-        self / self.len()
-    }
-}
-
-impl std::fmt::Display for Vertex {
+impl std::fmt::Display for Point {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "x: {}, y: {}, z: {}", self.x, self.y, self.z)
     }
 }
 
-impl Sub<Vertex> for Vertex {
+impl Sub<Point> for Point {
     type Output = Vector;
 
-    fn sub(self, rhs: Vertex) -> Self::Output {
+    fn sub(self, rhs: Point) -> Self::Output {
         Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -50,10 +40,10 @@ impl Sub<Vertex> for Vertex {
     }
 }
 
-impl Sub<&Vertex> for Vertex {
+impl Sub<&Point> for Point {
     type Output = Vector;
 
-    fn sub(self, rhs: Vertex) -> Self::Output {
+    fn sub(self, rhs: &Point) -> Self::Output {
         Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -62,10 +52,10 @@ impl Sub<&Vertex> for Vertex {
     }
 }
 
-impl Sub<Vertex> for &Vertex {
+impl Sub<Point> for &Point {
     type Output = Vector;
 
-    fn sub(self, rhs: Vertex) -> Self::Output {
+    fn sub(self, rhs: Point) -> Self::Output {
         Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -74,10 +64,10 @@ impl Sub<Vertex> for &Vertex {
     }
 }
 
-impl Sub<&Vertex> for &Vertex {
+impl Sub<&Point> for &Point {
     type Output = Vector;
 
-    fn sub(self, rhs: Vertex) -> Self::Output {
+    fn sub(self, rhs: &Point) -> Self::Output {
         Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -86,11 +76,11 @@ impl Sub<&Vertex> for &Vertex {
     }
 }
 
-impl Add<Vector> for Vertex {
-    type Output = Vertex;
+impl Add<Vector> for Point {
+    type Output = Point;
 
     fn add(self, rhs: Vector) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
@@ -98,11 +88,11 @@ impl Add<Vector> for Vertex {
     }
 }
 
-impl Add<Vector> for &Vertex {
-    type Output = Vertex;
+impl Add<Vector> for &Point {
+    type Output = Point;
 
     fn add(self, rhs: Vector) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
@@ -110,11 +100,11 @@ impl Add<Vector> for &Vertex {
     }
 }
 
-impl Add<&Vector> for Vertex {
-    type Output = Vertex;
+impl Add<&Vector> for Point {
+    type Output = Point;
 
-    fn add(self, rhs: Vector) -> Self::Output {
-        Vertex {
+    fn add(self, rhs: &Vector) -> Self::Output {
+        Point {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
@@ -122,11 +112,11 @@ impl Add<&Vector> for Vertex {
     }
 }
 
-impl Add<&Vector> for &Vertex {
-    type Output = Vertex;
+impl Add<&Vector> for &Point {
+    type Output = Point;
 
-    fn add(self, rhs: Vector) -> Self::Output {
-        Vertex {
+    fn add(self, rhs: &Vector) -> Self::Output {
+        Point {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
@@ -134,11 +124,11 @@ impl Add<&Vector> for &Vertex {
     }
 }
 
-impl Sub<Vector> for Vertex {
-    type Output = Vertex;
+impl Sub<Vector> for Point {
+    type Output = Point;
 
     fn sub(self, rhs: Vector) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
@@ -146,11 +136,11 @@ impl Sub<Vector> for Vertex {
     }
 }
 
-impl Sub<Vector> for &Vertex {
-    type Output = Vertex;
+impl Sub<Vector> for &Point {
+    type Output = Point;
 
     fn sub(self, rhs: Vector) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
@@ -158,11 +148,11 @@ impl Sub<Vector> for &Vertex {
     }
 }
 
-impl Sub<&Vector> for Vertex {
-    type Output = Vertex;
+impl Sub<&Vector> for Point {
+    type Output = Point;
 
-    fn sub(self, rhs: Vector) -> Self::Output {
-        Vertex {
+    fn sub(self, rhs: &Vector) -> Self::Output {
+        Point {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
@@ -170,11 +160,11 @@ impl Sub<&Vector> for Vertex {
     }
 }
 
-impl Sub<&Vector> for &Vertex {
-    type Output = Vertex;
+impl Sub<&Vector> for &Point {
+    type Output = Point;
 
-    fn sub(self, rhs: Vector) -> Self::Output {
-        Vertex {
+    fn sub(self, rhs: &Vector) -> Self::Output {
+        Point {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
@@ -182,7 +172,7 @@ impl Sub<&Vector> for &Vertex {
     }
 }
 
-impl AddAssign<Vector> for Vertex {
+impl AddAssign<Vector> for Point {
     fn add_assign(&mut self, rhs: Vector) {
         self.x += rhs.x;
         self.y += rhs.y;
@@ -190,7 +180,7 @@ impl AddAssign<Vector> for Vertex {
     }
 }
 
-impl SubAssign<Vector> for Vertex {
+impl SubAssign<Vector> for Point {
     fn sub_assign(&mut self, rhs: Vector) {
         self.x -= rhs.x;
         self.y -= rhs.y;
@@ -198,11 +188,27 @@ impl SubAssign<Vector> for Vertex {
     }
 }
 
-impl Div<f64> for Vertex {
-    type Output = Vertex;
+impl MulAssign<f64> for Point {
+    fn mul_assign(&mut self, rhs: f64) {
+        self.x *= rhs;
+        self.y *= rhs;
+        self.z *= rhs;
+    }
+}
+
+impl DivAssign<f64> for Point {
+    fn div_assign(&mut self, rhs: f64) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
+    }
+}
+
+impl Div<f64> for Point {
+    type Output = Point;
 
     fn div(self, rhs: f64) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x / rhs,
             y: self.y / rhs,
             z: self.z / rhs,
@@ -210,11 +216,11 @@ impl Div<f64> for Vertex {
     }
 }
 
-impl Div<f64> for &Vertex {
-    type Output = Vertex;
+impl Div<f64> for &Point {
+    type Output = Point;
 
     fn div(self, rhs: f64) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x / rhs,
             y: self.y / rhs,
             z: self.z / rhs,
@@ -222,11 +228,11 @@ impl Div<f64> for &Vertex {
     }
 }
 
-impl Mul<f64> for Vertex {
-    type Output = Vertex;
+impl Mul<f64> for Point {
+    type Output = Point;
 
     fn mul(self, rhs: f64) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x * rhs,
             y: self.y * rhs,
             z: self.z * rhs,
@@ -234,14 +240,26 @@ impl Mul<f64> for Vertex {
     }
 }
 
-impl Mul<f64> for &Vertex {
-    type Output = Vertex;
+impl Mul<f64> for &Point {
+    type Output = Point;
 
     fn mul(self, rhs: f64) -> Self::Output {
-        Vertex {
+        Point {
             x: self.x * rhs,
             y: self.y * rhs,
             z: self.z * rhs,
+        }
+    }
+}
+
+impl Neg for Point {
+    type Output = Point;
+
+    fn neg(self) -> Self::Output {
+        Point {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
         }
     }
 }
