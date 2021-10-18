@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My Rust + Webpack project!</title>
+    <link rel="stylesheet" href="index.css"/>
+  </head>
+  <body>
+    <div class="frame">
+      <canvas id="main-canvas"></canvas>
+      <div id="side">
+        <div id="model_data">
+          <div id="model_name">
+            <div class="model_text">Model Name:</div>
+            <div id="model_name_field" class="model_text"></div>
+          </div>
+          <div id="model_verts">
+            <div class="model_text">Vertex Count:</div>
+            <div id="vertex_count_field" class="model_text"></div>
+          </div>
+          <div id="model_tris">
+            <div class="model_text">Triangle Count:</div>
+            <div id="triangle_count_field" class="model_text"></div>
+          </div>
+        </div>
+        <div id="slicing_data">
+          <div id="slice_count">
+            <div class="model_text">Cuts: </div>
+            <div id="slice_count_field" class="model_text"></div>
+          </div>
+        </div>
+        <button id="load_data_button">Load Data</button>
+        <button id="slice_model_button">Slice Model</button>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

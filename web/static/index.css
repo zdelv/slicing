@@ -1,0 +1,54 @@
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+body { margin: 0; }
+.outer {
+}
+.frame {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+.frame>* {
+    flex: 1 1 auto;
+}
+#side {
+    font-family: monospace;
+    padding: .5em;
+    background: #444;
+    color: white;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+#side>button {
+    margin-top: 10px;
+}
+#main-canvas {
+    width: 75%;
+}
+
+#model_data {
+    display: flex;
+    flex-direction: column;
+}
+
+#model_data>* {
+    display: flex;
+}
+
+.model_text {
+    flex: 1;
+}
+
+#slicing_data {
+    margin-top: 20px;
+}
+
+#slicing_data>* {
+    display: flex;
+}
+

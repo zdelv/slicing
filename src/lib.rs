@@ -3,11 +3,11 @@ use crate::geometry::{Plane, Point, Vector};
 use crate::threemf::Model;
 use itertools::Itertools;
 
-mod common;
-mod error;
-mod geometry;
-mod load;
-mod threemf;
+pub mod common;
+pub mod error;
+pub mod geometry;
+pub mod load;
+pub mod threemf;
 
 // Check if the cuts are possible
 fn verify_cut(cut: &Plane) -> bool {
@@ -33,7 +33,7 @@ fn check_equal_normals(v1: Vector, v2: Vector, similarity: f64) -> bool {
     (diff.x < similarity) && (diff.y < similarity) && (diff.z < similarity)
 }
 
-fn slice_model(model: Model) -> Result<Vec<Plane>, Error> {
+pub fn slice_model(model: Model) -> Result<Vec<Plane>, Error> {
     let num_objects = model.num_objects();
     if num_objects > 1 {
         return Err(Error::TooManyModels);
