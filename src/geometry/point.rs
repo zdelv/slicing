@@ -28,6 +28,76 @@ impl std::fmt::Display for Point {
     }
 }
 
+// Element-wise operations
+// These are non-geometric, so their kept out
+// of the regular operations. You should only use these if you
+// plan on doing something non-geometric (opt-in).
+impl Point {
+    // Element-wise division
+    pub fn div_elem(&self, rhs: Point) -> Self {
+        Point {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+            z: self.z / rhs.z,
+        }
+    }
+
+    // Element-wise multiplication
+    pub fn mul_elem(&self, rhs: Point) -> Self {
+        Point {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
+        }
+    }
+
+    // Element-wise addition
+    pub fn add_elem(&self, rhs: Point) -> Self {
+        Point {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+
+    // Element-wise subtraction
+    pub fn sub_elem(&self, rhs: Point) -> Self {
+        Point {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+
+    // Element-wise division
+    pub fn div_elem_mut(&mut self, rhs: Point) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
+    }
+
+    // Element-wise multiplication
+    pub fn mul_elem_mut(&mut self, rhs: Point) {
+        self.x *= rhs.x;
+        self.y *= rhs.y;
+        self.z *= rhs.z;
+    }
+
+    // Element-wise addition
+    pub fn add_elem_mut(&mut self, rhs: Point) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+        self.z += rhs.z;
+    }
+
+    // Element-wise subtraction
+    pub fn sub_elem_mut(&mut self, rhs: Point) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
+    }
+}
+
 impl Sub<Point> for Point {
     type Output = Vector;
 

@@ -1,9 +1,13 @@
 import * as THREE from 'three';
-import {slice_model, load_model} from "../pkg/index_bg.js";
+import {slice_model, load_model, get_centroid} from "../pkg/index_bg.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {VertexNormalsHelper} from "three/examples/jsm/helpers/VertexNormalsHelper";
 
 const scene = new THREE.Scene();
 const canvas = document.querySelector("#main-canvas");
-const camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.001, 1000 );
+// const aspect = canvas.clientWidth / canvas.clientHeight;
+// const camera = new THREE.OrthographicCamera(-1,1,1,-1, 0.001, 1000);
 
 const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("#main-canvas"), antialias: true });
 renderer.setSize( renderer.domElement.innerWidth, renderer.domElement.innerHeight );
@@ -13,17 +17,17 @@ const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 const cube = new THREE.Mesh( geometry, material );
 // scene.add( cube );
 
-//const light = new THREE.HemisphereLight();
-//scene.add(light);
-const dir = new THREE.DirectionalLight();
-dir.position.set(-1, 1, 1);
-scene.add(dir);
+const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
+scene.add(light);
+const dir = new THREE.DirectionalLight(0xffffff, 1.5);
+//dir.position.set(-1, 1, 1);
+camera.add(dir);
+scene.add(camera);
 
-camera.position.z = 1;
-camera.position.x = 1;
-camera.position.y = 1;
-
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.position.set(1,1,1);
 camera.lookAt(0,0,0);
+controls.update()
 
 function resizeCanvas() {
     const canvas = renderer.domElement;
@@ -88,9 +92,9 @@ function update_model_display() {
     const vertices = ((data) => {
         let out = [];
         for (let vert of data["verts"]) {
-            out.push(vert["x"]);
-            out.push(vert["z"]);
-            out.push(vert["y"]);
+            out.push(vert.x);
+            out.push(vert.z);
+            out.push(vert.y);
         }
         return out
     })(model);
@@ -110,15 +114,22 @@ function update_model_display() {
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
     geometry.setIndex(indices);
+    geometry.computeVertexNormals();
 
-    const material = new THREE.MeshBasicMaterial({color: 0x00ffff})
+    const material = new THREE.MeshStandardMaterial({color: 0x555555, side: THREE.DoubleSide, metallicness: 0.5})
+    material.flatShading = true;
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.receiveShadow = true;
-    scene.add(mesh);
 
-    const wireframe = new THREE.WireframeGeometry(geometry);
-    const line = new THREE.LineSegments(wireframe);
-    scene.add(line);
+    let out = JSON.parse(get_centroid(dropped_data));
+    controls.target.set(out.x, out.z, out.y)
+
+    scene.add(mesh);
+    // const helper = new VertexNormalsHelper(mesh);
+    // scene.add(helper);
+
+    // const wireframe = new THREE.WireframeGeometry(geometry);
+    // const line = new THREE.LineSegments(wireframe);
+    // scene.add(line);
 }
 
 function slice_data() {
@@ -154,6 +165,7 @@ function preventDefaults(e) {
 
 function animate(time) {
     resizeCanvas()
+    controls.update()
 
     renderer.render( scene, camera );
     window.requestAnimationFrame( animate );

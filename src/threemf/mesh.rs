@@ -84,6 +84,16 @@ impl Mesh {
             *point += move_dir;
         }
     }
+
+    pub fn centroid(&self) -> Point {
+        let mut center = Point::zero();
+
+        for vert in self.vertices.iter() {
+            center.add_elem_mut(*vert);
+        }
+
+        center / (self.vertices.len() as f64)
+    }
 }
 
 #[test]
@@ -97,4 +107,14 @@ fn test_normalize() {
     //     println!("{}", point);
     // }
     assert!(true)
+}
+
+#[test]
+fn test_centroid() {
+    use crate::load::load_model;
+
+    let model = load_model("data/centered_cube_2x2x2.3mf").unwrap();
+    let cent = model.objects[0].mesh.centroid();
+    println!("Calculated Centroid: {}", cent);
+    assert_eq!(cent, Point::zero())
 }

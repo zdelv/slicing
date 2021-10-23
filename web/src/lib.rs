@@ -2,10 +2,9 @@ use wasm_bindgen::convert::FromWasmAbi;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
-use slicing::threemf::model::Model;
-use slicing::geometry::Plane;
 use serde_json::to_string;
-
+use slicing::geometry::Plane;
+use slicing::threemf::model::Model;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -25,7 +24,6 @@ extern "C" {
     fn log_usize(s: usize);
 }
 
-
 // This is like the `main` function, except for JavaScript.
 #[wasm_bindgen(start)]
 pub fn main_js() -> Result<(), JsValue> {
@@ -33,7 +31,6 @@ pub fn main_js() -> Result<(), JsValue> {
     // It's disabled in release mode so it doesn't bloat up the file size.
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
-
 
     // Your code goes here!
     console::log_1(&JsValue::from_str("Hello world!"));
@@ -49,7 +46,12 @@ pub fn load_model(data: &[u8]) -> Result<String, JsValue> {
     let json_tris = serde_json::to_string(&model.objects[0].mesh.triangles).unwrap();
     log(format!("{},{}", json_verts, json_tris).as_str());
 
-    Ok(format!(r#"{{"name": "{}", "verts": {}, "tris": {}}}"#, model.name(), json_verts, json_tris))
+    Ok(format!(
+        r#"{{"name": "{}", "verts": {}, "tris": {}}}"#,
+        model.name(),
+        json_verts,
+        json_tris
+    ))
 }
 
 #[wasm_bindgen]
@@ -72,6 +74,18 @@ pub fn slice_model(data: &[u8]) -> Result<String, JsValue> {
 
     let json = serde_json::to_string(&cuts).unwrap();
     log(json.as_str());
+
+    Ok(json)
+}
+
+#[wasm_bindgen]
+pub fn get_centroid(data: &[u8]) -> Result<String, JsValue> {
+    let model = Model::from_raw_data(data).unwrap();
+
+    let centroid = model.objects[0].mesh.centroid();
+    let json = serde_json::to_string(&centroid).unwrap();
+
+    log(format!("Centroid: {}", json.as_str()).as_str());
 
     Ok(json)
 }
