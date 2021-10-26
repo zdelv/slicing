@@ -12,11 +12,6 @@ const camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clie
 const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("#main-canvas"), antialias: true });
 renderer.setSize( renderer.domElement.innerWidth, renderer.domElement.innerHeight );
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-// scene.add( cube );
-
 const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
 scene.add(light);
 const dir = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -141,7 +136,50 @@ function slice_data() {
     slices = JSON.parse(out);
 
     document.querySelector("#slice_count_field").textContent = slices.length
+
+    const geo = new THREE.PlaneGeometry(1,1);
+    const material = new THREE.MeshStandardMaterial({color: 0x1133ff, side: THREE.DoubleSide, opacity: 0.5, transparent: true});
+
+    let ids = [];
+    for (let slice of slices) {
+        const plane = new THREE.Mesh(geo, material);
+        scene.add(plane);
+
+        const normal = new THREE.Vector3(slice.normal.x, slice.normal.z, slice.normal.y);
+        plane.lookAt(normal);
+        plane.position.set(slice.point.x, slice.point.z, slice.point.y);
+        plane.translateOnAxis(normal, -0.001);
+        ids.push(plane.id);
+    }
+
+    add_slices_to_select(ids)
+
 }
+
+function add_slices_to_select(ids) {
+    let select = document.querySelector("#slice_list_select")
+
+    for (let i = 0; i < slices.length; i++) {
+        let opt = document.createElement("option");
+        opt.value = ids[i];
+        opt.innerHTML = "Slice " + i.toString();
+        select.appendChild(opt)
+    }
+}
+
+document.querySelector("#slice_list_select").addEventListener('click', (e) => {
+    let select = document.querySelector("#slice_list_select");
+    let selected_options = Array.from(select.selectedOptions);
+    let options = select.children;
+    for (let option of options) {
+        let obj = scene.getObjectById(parseInt(option.value));
+        if (selected_options.includes(option)) {
+            obj.visible = true;
+        } else {
+            obj.visible = false;
+        }
+    }
+})
 
 
 let dropped_data = new Uint8Array(0);
